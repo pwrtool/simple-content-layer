@@ -10,6 +10,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@pwrtool/kit": "0.2.1"
+    "@pwrtool/kit": "0.2.5"
   }
 }
