@@ -1,0 +1,15 @@
+{
+  "name": "test-kit",
+  "version": "1.0.0",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@pwrtool/kit": "0.2.1"
+  }
+}
