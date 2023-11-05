@@ -1,3 +1,5 @@
+import { Filesystem } from "./reader.ts";
+
 type ContentFile = {
   filename: string;
   extension: string;
@@ -5,4 +7,4 @@ type ContentFile = {
   frontmatter: object;
 };
 
-export function parseFilesInDirectory() { }
+export function parseFilesInDirectory(filesystem: Filesystem): ContentFile[] { }

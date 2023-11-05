@@ -3,6 +3,7 @@ import fs from "node:fs";
 export interface Filesystem {
   files: string[];
   read(filepath: string): string | null;
+  exists(filepath: string): boolean;
 }
 
 export class LocalDirectory implements Filesystem {
@@ -19,6 +20,10 @@ export class LocalDirectory implements Filesystem {
     } else {
       return null;
     }
+  }
+
+  exists(filepath: string): boolean {
+    return this.files.includes(filepath);
   }
 }
 
