@@ -1,4 +1,4 @@
-import * as matter from "gray-matter";
+import matter from "gray-matter";
 
 export type ContentRoute = {
   route: string;
@@ -41,4 +41,29 @@ export function splitFrontmatter(data: string): {
     frontmatter: result.data,
     content: result.content,
   };
+}
+
+export function getRoute(filepath: string): string {
+  // remove slash at start and end of string
+  if (filepath.at(0) === "/") {
+    filepath = filepath.slice(0);
+  }
+
+  const len = filepath.length;
+  if (filepath.at(len - 1) === "/") {
+    filepath = filepath.substring(0, len - 1);
+  }
+
+  const split = filepath.split("/");
+  if (split[split.length - 1] === "index") {
+    split.pop();
+  }
+
+  let route = split.join("/");
+
+  if (route.at(0) !== "/") {
+    route = "/" + route;
+  }
+
+  return route;
 }

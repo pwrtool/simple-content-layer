@@ -1,5 +1,5 @@
-import { describe, it, expect } from "bun:test";
-import { getHeaders, Header } from "../lib/route.ts";
+import { describe, it, test, expect } from "bun:test";
+import { getHeaders, getRoute } from "../lib/route.ts";
 
 const example1 = `
 Hello World
@@ -58,4 +58,29 @@ describe("getHeaders", () => {
       },
     ]);
   });
+});
+
+test("getRoute", () => {
+  const tests = [
+    {
+      input: "docs/index",
+      output: "/docs",
+    },
+    {
+      input: "/docs/hello/index",
+      output: "/docs/hello",
+    },
+    {
+      input: "docs/user/",
+      output: "/docs/user",
+    },
+    {
+      input: "/hello/world",
+      output: "/hello/world",
+    },
+  ];
+
+  for (const { input, output } of tests) {
+    expect(getRoute(input)).toEqual(output);
+  }
 });
