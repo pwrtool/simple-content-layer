@@ -1,10 +1,12 @@
 import matter from "gray-matter";
+import { ContentFile } from "./parse";
 
 export type ContentRoute = {
   route: string;
   content: string;
   frontmatter: object;
   outline: Header[];
+  extension?: string;
 };
 
 export type Header = {
@@ -44,7 +46,6 @@ export function splitFrontmatter(data: string): {
 }
 
 export function getRoute(filepath: string): string {
-  // remove slash at start and end of string
   if (filepath.at(0) === "/") {
     filepath = filepath.slice(0);
   }
@@ -66,4 +67,28 @@ export function getRoute(filepath: string): string {
   }
 
   return route;
+}
+
+export function getContentRoutes(files: ContentFile[]): ContentRoute[] {
+  const routes: ContentRoute[] = [];
+  for (const file of files) {
+    const route: ContentRoute = {
+      route: "",
+      content: "",
+      outline: [],
+      frontmatter: {},
+    };
+
+    const { content, frontmatter } = splitFrontmatter(file.data);
+    route.frontmatter = frontmatter;
+    route.content = content;
+
+    route.route = getRoute(file.path);
+    route.extension = file.extension;
+    route.outline = getHeaders(content);
+
+    routes.push(route);
+  }
+
+  return routes;
 }

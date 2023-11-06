@@ -1,5 +1,11 @@
 import { describe, it, test, expect } from "bun:test";
-import { getHeaders, getRoute } from "../lib/route.ts";
+import { ContentFile } from "../lib/parse.ts";
+import {
+  getHeaders,
+  getRoute,
+  getContentRoutes,
+  ContentRoute,
+} from "../lib/route.ts";
 
 const example1 = `
 Hello World
@@ -83,4 +89,97 @@ test("getRoute", () => {
   for (const { input, output } of tests) {
     expect(getRoute(input)).toEqual(output);
   }
+});
+
+// write test for getContentRoute assuming an e2e environment
+const exampleFile1 = `
+# Hello World
+`;
+const exampleFile2 = `
+# Hello World
+This is some more content
+## Another header
+`;
+const exampleFile3 = `---
+title: Hello World
+weight: 4
+---
+test`;
+const exampleFile4 = `
+test
+`;
+describe("getContentRoutes", () => {
+  it("turns the files into routes", () => {
+    const input: ContentFile[] = [
+      {
+        path: "docs/index",
+        extension: "md",
+        data: exampleFile1,
+      },
+      {
+        path: "docs/hello/index",
+        extension: "md",
+        data: exampleFile2,
+      },
+      {
+        path: "docs/user/",
+        extension: "md",
+        data: exampleFile3,
+      },
+      {
+        path: "/hello/world",
+        extension: "md",
+        data: exampleFile4,
+      },
+    ];
+    const output = getContentRoutes(input);
+    const expected: ContentRoute[] = [
+      {
+        route: "/docs",
+        frontmatter: {},
+        extension: "md",
+        outline: [
+          {
+            text: "Hello World",
+            level: 1,
+          },
+        ],
+        content: "\n# Hello World\n",
+      },
+      {
+        route: "/docs/hello",
+        extension: "md",
+        frontmatter: {},
+        outline: [
+          {
+            text: "Hello World",
+            level: 1,
+          },
+          {
+            text: "Another header",
+            level: 2,
+          },
+        ],
+        content: exampleFile2,
+      },
+      {
+        route: "/docs/user",
+        extension: "md",
+        content: "test",
+        outline: [],
+        frontmatter: {
+          title: "Hello World",
+          weight: 4,
+        },
+      },
+      {
+        route: "/hello/world",
+        extension: "md",
+        frontmatter: {},
+        outline: [],
+        content: exampleFile4,
+      },
+    ];
+    expect(output).toEqual(expected);
+  });
 });
