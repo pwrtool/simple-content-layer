@@ -13,7 +13,13 @@ export function getOutputFiles(
   const outputFiles = new Map<string, OutputFile>();
 
   for (const route of routes) {
-    const key = route.route.replace("/", ">") + ".json";
+    // remove first / from route
+    let key = route.route;
+    if (key.at(0) === "/") {
+      key = key.slice(1);
+    }
+
+    key = key.replaceAll("/", ">") + ".json";
     outputFiles.set(key, {
       content: route.content,
       outline: route.outline,

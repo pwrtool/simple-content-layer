@@ -15,7 +15,6 @@ export class LocalDirectory implements Filesystem {
 
   read(filepath: string): string | null {
     if (fs.existsSync(filepath)) {
-      console.log("exists");
       return fs.readFileSync(filepath, "utf8");
     } else {
       return null;

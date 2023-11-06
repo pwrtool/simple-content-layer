@@ -41,15 +41,18 @@ powertool([
       const contentRoutes = getContentRoutes(contentFiles);
 
       const outputFiles = getOutputFiles(contentRoutes);
-      const listFile = getListFile(contentRoutes);
+      const listFile = JSON.stringify(getListFile(contentRoutes));
 
-      fs.writeFileSync(`${output}/list.json`, JSON.stringify(listFile));
+      fs.writeFileSync(`${CliArgs.getRunDir()}/${output}/list.json`, listFile);
 
-      // iterate through outputFiles and write to disk
-      for (const [key, outputFile] of outputFiles) {
-        console.log(key);
-        console.log(output);
-        fs.writeFileSync(`${output}/${key}`, JSON.stringify(outputFile));
+      for (const [key, value] of outputFiles) {
+        const path = `${CliArgs.getRunDir()}/${output}/${key}`;
+        console.log(path);
+        // const dir = path.split("/").slice(0, -1).join("/");
+        // if (!fs.existsSync(dir)) {
+        //   fs.mkdirSync(dir, { recursive: true });
+        // }
+        // fs.writeFileSync(path, JSON.stringify(value));
       }
     },
   },
