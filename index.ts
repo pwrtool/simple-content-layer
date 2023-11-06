@@ -47,12 +47,12 @@ powertool([
 
       for (const [key, value] of outputFiles) {
         const path = `${CliArgs.getRunDir()}/${output}/${key}`;
-        console.log(path);
-        // const dir = path.split("/").slice(0, -1).join("/");
-        // if (!fs.existsSync(dir)) {
-        //   fs.mkdirSync(dir, { recursive: true });
-        // }
-        // fs.writeFileSync(path, JSON.stringify(value));
+        const dir = path.split("/").slice(0, -1).join("/");
+
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+        fs.writeFileSync(path, JSON.stringify(value));
       }
     },
   },
