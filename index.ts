@@ -28,15 +28,7 @@ powertool([
 
       const [input, output] = argValues;
 
-      // ensure output and input dirs exist
-      if (!fs.existsSync(input)) {
-        IO.error(`input directory ${input} does not exist`);
-      }
-      if (!fs.existsSync(output)) {
-        IO.error(`output directory ${output} does not exist`);
-      }
-
-      const filesystem = new LocalDirectory(input);
+      const filesystem = new LocalDirectory(`${CliArgs.getRunDir()}/${input}`);
       const contentFiles = parseFilesInDirectory(filesystem);
       const contentRoutes = getContentRoutes(contentFiles);
 
